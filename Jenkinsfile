@@ -18,6 +18,16 @@ volumes: [
         println "Failed to test - ${currentBuild.fullDisplayName}"
       }
     }
+    stage('Build') {
+      try {
+        container('maven') {
+          sh """mvn clean package"""
+        }
+      }
+      catch (exc) {
+        println "Failed to build - ${currentBuild.fullDisplayName}"
+      }
+    }
     stage('Create Docker images') {
       container('docker') {
         sh """
