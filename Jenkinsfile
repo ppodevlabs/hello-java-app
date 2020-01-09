@@ -1,7 +1,6 @@
 def label = "buildpod.${env.JOB_NAME}.${env.BUILD_NUMBER}".replace('-', '_').replace('/', '_')
 podTemplate(label: label, containers: [
   containerTemplate(name: 'maven', image: 'maven:3.6.2-jdk-8', command: 'cat', ttyEnabled: true),
-  containerTemplate(name: 'jnlp', image: 'jenkinsci/jnlp-slave:alpine', command: '/usr/local/bin/start.sh', args: '${computer.jnlpmac} ${computer.name}', ttyEnabled: false),
   containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
 ],
 volumes: [
@@ -11,7 +10,11 @@ volumes: [
     stage('Test') {
       try {
         container('maven') {
-          sh "mvn test"
+          sh """
+          pwd
+          ls .
+          mvn test
+          """
         }
       }
       catch (exc) {
