@@ -7,14 +7,11 @@ volumes: [
   hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
 ]) {
   node(label) {
+    def myRepo = checkout scm
     stage('Test') {
       try {
         container('maven') {
-          sh """
-          pwd
-          ls .
-          mvn test
-          """
+          sh """mvn test"""
         }
       }
       catch (exc) {
