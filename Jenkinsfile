@@ -1,5 +1,4 @@
 def label = "buildpod.${env.JOB_NAME}.${env.BUILD_NUMBER}".replace('-', '_').replace('/', '_')
-
 podTemplate(label: label, containers: [
   containerTemplate(name: 'maven', image: 'maven:3.6.2-jdk-8', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
@@ -16,11 +15,6 @@ volumes: [
       }
       catch (exc) {
         println "Failed to test - ${currentBuild.fullDisplayName}"
-      }
-    }
-    stage('Build') {
-      container('gradle') {
-        sh "gradle build"
       }
     }
     stage('Create Docker images') {
