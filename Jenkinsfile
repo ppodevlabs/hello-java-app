@@ -38,7 +38,7 @@ volumes: [
     }
     stage('Create Docker images') {
       container('docker') {
-        def image = docker.build("806950227484.dkr.ecr.eu-west-3.amazonaws.com/hello:${BUILD_NUMBER}")
+        def image = docker.build("806950227484.dkr.ecr.eu-west-3.amazonaws.com/hello:b-${BUILD_NUMBER}")
         docker.withRegistry('https://806950227484.dkr.ecr.eu-west-3.amazonaws.com', 'ecr:eu-west-3:terraform_role') {
           image.push()
         }
