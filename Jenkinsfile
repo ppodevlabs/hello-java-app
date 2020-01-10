@@ -1,7 +1,15 @@
 def label = "buildpod.${env.JOB_NAME}.${env.BUILD_NUMBER}".replace('-', '_').replace('/', '_')
 podTemplate(label: label, containers: [
   containerTemplate(name: 'maven', image: 'maven:3.6.2-jdk-8', command: 'cat', ttyEnabled: true),
-  containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
+  containerTemplate(
+    name: 'docker',
+    image: 'docker',
+    command: 'cat',
+    ttyEnabled: true,
+    envVars: [
+      envVar(key: 'TZ', value: 'Europe/Madrid')
+    ],
+  )
 ],
 volumes: [
   hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
